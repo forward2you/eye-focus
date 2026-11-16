@@ -1,6 +1,6 @@
 export const SINGLE_DURATION = 60000;
 export const TOTAL_DURATION = 120000;
-export const BALL_SPEED = 180;
+export const BALL_SPEED = 240;
 export const BALL_RADIUS = 12;
 export const TRAIL_DURATION = 1800;
 

@@ -99,31 +99,31 @@ test("mobile and landscape bounds let the ball body touch every viewport edge", 
   }
 });
 
-test("speed is exactly 180 pixels per second and reflection occurs at contact", () => {
-  assert.equal(BALL_SPEED, 180);
+test("speed is exactly 240 pixels per second and reflection occurs at contact", () => {
+  assert.equal(BALL_SPEED, 240);
   const ball = createBall(bounds, fixedRandom);
   Object.assign(ball, { x: bounds.right - BALL_SPEED, y: 400, vx: BALL_SPEED, vy: 0 });
   resetTrail(ball);
   advanceBall(ball, 0.5, bounds);
-  close(ball.x, bounds.right - 90);
-  assert.equal(ball.vx, 180);
+  close(ball.x, bounds.right - 120);
+  assert.equal(ball.vx, 240);
   advanceBall(ball, 0.5, bounds);
   close(ball.x + BALL_RADIUS, 1280);
-  assert.equal(ball.vx, -180);
+  assert.equal(ball.vx, -240);
   advanceBall(ball, 0.5, bounds);
-  close(ball.x, bounds.right - 90);
+  close(ball.x, bounds.right - 120);
   close(ball.y, 400);
 });
 
 test("trail includes exact wall contact rather than cutting across the bounce", () => {
   const ball = createBall(bounds, fixedRandom);
-  Object.assign(ball, { x: bounds.right - 18, y: 400, vx: BALL_SPEED, vy: 0 });
+  Object.assign(ball, { x: bounds.right - 24, y: 400, vx: BALL_SPEED, vy: 0 });
   resetTrail(ball);
   advanceBall(ball, 0.2, bounds);
   assert.equal(ball.trail.length, 3);
   close(ball.trail[1].x, bounds.right);
   close(ball.trail[1].time, 100);
-  close(ball.trail[2].x, bounds.right - 18);
+  close(ball.trail[2].x, bounds.right - 24);
   close(ball.trail[2].time, 200);
 });
 
