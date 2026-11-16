@@ -1,4 +1,4 @@
-import { advanceSession, createSession, getBounds, getPhase, TOTAL_DURATION } from "./motion.mjs";
+import { advanceSession, BALL_RADIUS, createSession, getBounds, getPhase, resetTrail, TOTAL_DURATION, TRAIL_DURATION } from "./motion.mjs";
 
 const canvas = document.getElementById("field");
 const context = canvas.getContext("2d");
@@ -22,6 +22,24 @@ let running = false;
 let previousTime = null;
 let animationId = null;
 
+function drawTrail(ball) {
+  context.lineWidth = 3;
+  context.lineCap = "round";
+  for (let index = 1; index < ball.trail.length; index += 1) {
+    const start = ball.trail[index - 1];
+    const end = ball.trail[index];
+    const opacity = point => Math.max(0, 1 - (ball.age - point.time) / TRAIL_DURATION) * 0.45;
+    const gradient = context.createLinearGradient(start.x, start.y, end.x, end.y);
+    gradient.addColorStop(0, `rgba(140, 210, 164, ${opacity(start)})`);
+    gradient.addColorStop(1, `rgba(140, 210, 164, ${opacity(end)})`);
+    context.strokeStyle = gradient;
+    context.beginPath();
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.stroke();
+  }
+}
+
 function drawBall(ball) {
   const halo = context.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, 38);
   halo.addColorStop(0, "#80e9a160");
@@ -38,12 +56,12 @@ function drawBall(ball) {
   context.arc(ball.x, ball.y, 16, 0, Math.PI * 2);
   context.stroke();
 
-  const core = context.createRadialGradient(ball.x - 2, ball.y - 2, 0, ball.x, ball.y, 12);
+  const core = context.createRadialGradient(ball.x - 2, ball.y - 2, 0, ball.x, ball.y, BALL_RADIUS);
   core.addColorStop(0, "#b8efc5");
   core.addColorStop(1, "#80d99b");
   context.fillStyle = core;
   context.beginPath();
-  context.arc(ball.x, ball.y, 12, 0, Math.PI * 2);
+  context.arc(ball.x, ball.y, BALL_RADIUS, 0, Math.PI * 2);
   context.fill();
 }
 
@@ -51,6 +69,7 @@ function draw() {
   context.clearRect(0, 0, width, height);
   const currentPhase = getPhase(session.elapsed);
   if (currentPhase !== "complete") {
+    for (const ball of session.balls) drawTrail(ball);
     for (const ball of session.balls) drawBall(ball);
   }
   phase.textContent = { single: "单球", dual: "双球", complete: "已结束" }[currentPhase];
@@ -71,6 +90,7 @@ function layout() {
   for (const ball of session.balls) {
     ball.x = Math.max(bounds.left, Math.min(bounds.right, ball.x));
     ball.y = Math.max(bounds.top, Math.min(bounds.bottom, ball.y));
+    resetTrail(ball);
   }
   draw();
 }
@@ -133,7 +153,7 @@ toggle.addEventListener("click", () => {
   toggle.textContent = "暂停";
   toggle.setAttribute("aria-pressed", "true");
   status.textContent = getPhase(session.elapsed) === "single"
-    ? "单球阶段；缓慢反弹，速度保持不变"
+    ? "单球阶段；碰边反弹，尾迹显示运动路线"
     : "双球阶段；自然观看，不必强行同时追踪";
   draw();
   animationId = requestAnimationFrame(frame);
