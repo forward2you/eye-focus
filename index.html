@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#203e2a">
+    <meta name="description" content="铺满屏幕的两分钟绿点跟随演示：一分钟单点、一分钟双点。纯静态网页，无需安装。">
+    <title>绿点跟随 · Eye Focus</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a3020'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%234bff91'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="app">
+      <section class="device" aria-label="绿色光点跟随面板">
+        <svg class="display" viewBox="0 0 1000 650" role="img" aria-labelledby="display-title display-description">
+          <title id="display-title">绿色面板与发光目标</title>
+          <desc id="display-description">金属定位点沿边缘和中央十字排列。前一分钟为单点逐格往返，后一分钟为左右双点逐格展开、合拢，两分钟后停止。这是运动演示，不是治疗设备。</desc>
+          <defs>
+            <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#203e2a"/>
+              <stop offset=".48" stop-color="#213f2c"/>
+              <stop offset="1" stop-color="#1d3928"/>
+            </linearGradient>
+            <radialGradient id="panel-light" cx=".35" cy=".25" r=".85">
+              <stop stop-color="#8ac281" stop-opacity=".025"/>
+              <stop offset="1" stop-color="#07120d" stop-opacity=".08"/>
+            </radialGradient>
+            <radialGradient id="metal" cx=".3" cy=".22">
+              <stop stop-color="#d4dfbc"/>
+              <stop offset=".4" stop-color="#9cae89"/>
+              <stop offset=".72" stop-color="#536c4d"/>
+              <stop offset="1" stop-color="#2c4d32"/>
+            </radialGradient>
+            <radialGradient id="glow">
+              <stop stop-color="#80e9a1" stop-opacity=".45"/>
+              <stop offset=".25" stop-color="#6fdf93" stop-opacity=".3"/>
+              <stop offset=".55" stop-color="#63d988" stop-opacity=".1"/>
+              <stop offset="1" stop-color="#63d988" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="core">
+              <stop stop-color="#b8efc5"/>
+              <stop offset=".6" stop-color="#9de7af"/>
+              <stop offset="1" stop-color="#80d99b"/>
+            </radialGradient>
+            <g id="light">
+              <circle r="38" fill="url(#glow)"/>
+              <circle r="14" fill="none" stroke="#99e5af" stroke-opacity=".5" stroke-width="1.2"/>
+              <circle r="10" fill="url(#core)"/>
+            </g>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#panel)"/>
+          <rect width="100%" height="100%" fill="url(#panel-light)"/>
+          <g id="nodes" opacity=".55" aria-hidden="true"></g>
+          <g id="target" aria-hidden="true"><use href="#light"/></g>
+          <g id="target-secondary" visibility="hidden" aria-hidden="true"><use href="#light"/></g>
+        </svg>
+      </section>
+
+      <p id="status" role="status" aria-live="polite">前一分钟单点，后一分钟双点；自然眨眼，不适即停</p>
+      <footer class="toolbar">
+        <span id="phase">单点</span>
+        <span id="remaining" role="timer" aria-label="本轮剩余时间" aria-live="off">02:00</span>
+        <div class="actions">
+          <button id="toggle" type="button" aria-pressed="false">开始跟随</button>
+          <button id="fullscreen" class="secondary" type="button">全屏</button>
+        </div>
+      </footer>
+      <p class="notice">仅为视觉跟随演示，不替代检查或治疗。如有眼痛、头晕或复视，请立即停止。</p>
+      <noscript><p class="script-notice">需要启用 JavaScript 才能播放绿点运动。</p></noscript>
+    </main>
+  </body>
+</html>
