@@ -7,18 +7,31 @@
     <meta name="description" content="两分钟台球式跟随演示：一分钟单球、一分钟双球，触及屏幕边缘后等角反弹，带渐隐运动尾迹。">
     <title>弹球跟随 · Eye Focus</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23203e2a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%239de7af'/%3E%3C/svg%3E">
-    <link rel="stylesheet" href="./style.css">
-    <script type="module" src="./app.js"></script>
+    <link rel="stylesheet" href="./style.css?v=__BUILD_VERSION__">
+    <script type="module">
+      const button = document.getElementById("toggle");
+      const status = document.getElementById("status");
+      try {
+        await import("./app.js?v=__BUILD_VERSION__");
+        button.disabled = false;
+        button.textContent = "开始跟随";
+        status.textContent = "单球一分钟，双球一分钟；不适即停";
+      } catch (error) {
+        console.error("Bouncing page initialization failed:", error);
+        status.textContent = "页面资源加载失败，请刷新页面；若仍失败，请检查网络";
+        button.textContent = "加载失败";
+      }
+    </script>
   </head>
   <body>
     <main class="app">
       <canvas id="field" role="img" aria-label="柔和绿球以固定速度运动，球体触及屏幕边缘后等角反弹，带渐隐运动尾迹；一分钟后增加第二个球，两分钟后停止。"></canvas>
       <a class="back" href="../">← 点阵版</a>
-      <p id="status" role="status" aria-live="polite">单球一分钟，双球一分钟；不适即停</p>
+      <p id="status" role="status" aria-live="polite">正在加载弹球页面...</p>
       <footer class="toolbar">
         <span id="phase">单球</span>
         <span id="remaining" role="timer" aria-label="本轮剩余时间" aria-live="off">02:00</span>
-        <button id="toggle" type="button" aria-pressed="false">开始跟随</button>
+        <button id="toggle" type="button" aria-pressed="false" disabled>正在加载</button>
         <button id="fullscreen" class="secondary" type="button">全屏</button>
       </footer>
       <p class="notice">仅为视觉跟随演示，随机不代表疗效更好。如有头疼、眼痛或复视，请立即停止。</p>

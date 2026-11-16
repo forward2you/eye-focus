@@ -1,4 +1,4 @@
-import { advanceSession, BALL_RADIUS, createSession, getBounds, getPhase, resetTrail, TOTAL_DURATION, TRAIL_DURATION } from "./motion.mjs";
+import { advanceSession, BALL_RADIUS, createSession, getBounds, getPhase, resetTrail, TOTAL_DURATION, TRAIL_DURATION } from "./motion.mjs?v=__BUILD_VERSION__";
 
 const canvas = document.getElementById("field");
 const context = canvas.getContext("2d");

@@ -65,6 +65,7 @@ button {
 }
 
 button:hover { background: #d2e8c1; }
+button:disabled { opacity: .6; cursor: not-allowed; }
 button.secondary { background: #ffffff0b; color: #dbe8d1; border-color: #b6d59a50; }
 button.secondary:hover { background: #ffffff19; }
 button:focus-visible, .back:focus-visible { outline: 2px solid #edffdc; outline-offset: 3px; }

@@ -43,6 +43,11 @@ jobs:
           mkdir _site
           cp index.html style.css app.js .nojekyll _site/
           cp -R bounce _site/bounce
+          sed -i "s/__BUILD_VERSION__/${GITHUB_SHA}/g" _site/bounce/index.html _site/bounce/app.js
+          if grep -R '__BUILD_VERSION__' _site/bounce; then
+            echo "Unresolved asset version in published files"
+            exit 1
+          fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
