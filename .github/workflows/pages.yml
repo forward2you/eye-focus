@@ -24,7 +24,7 @@ jobs:
         run: |
           node --check app.js
           node --input-type=module --check < bounce/app.js
-          node --test tests/bounce.test.mjs
+          node --test tests/*.test.mjs
 
   deploy:
     needs: test
@@ -43,8 +43,8 @@ jobs:
           mkdir _site
           cp index.html style.css app.js .nojekyll _site/
           cp -R bounce _site/bounce
-          sed -i "s/__BUILD_VERSION__/${GITHUB_SHA}/g" _site/bounce/index.html _site/bounce/app.js
-          if grep -R '__BUILD_VERSION__' _site/bounce; then
+          sed -i "s/__BUILD_VERSION__/${GITHUB_SHA}/g" _site/index.html _site/bounce/index.html _site/bounce/app.js
+          if grep -R '__BUILD_VERSION__' _site; then
             echo "Unresolved asset version in published files"
             exit 1
           fi
